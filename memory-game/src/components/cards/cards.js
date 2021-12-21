@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useRef} from 'react';
 
 import useImageService from "../../services/ImageService"
 import Spinner from '../spinner/spinner';
@@ -15,32 +15,56 @@ const Cards = () => {
     }, [])
 
     const createCards = (char) => {
-        function itemPosition() {
-            let indexArr = [];
-            for (let i = 0; i <= 17; i++) {
-                indexArr.push(i);
+        function itemsPosition() {
+            let indexArrData = [];
+            for (let i = 0; i <= 35; i++) {
+                indexArrData.push(i);
             }
 
-            indexArr.sort(() => Math.random() - 0.5);
+            indexArrData.sort(() => Math.random() - 0.5);
 
-            return indexArr;
+            return indexArrData;
         }
 
-        const indexArr = itemPosition();
-        
-        const newData = indexArr.map(position => char[position]);
+        const indexArrData = itemsPosition();
 
-        setData([...char, ...newData]);
+        const newChar = [...char, ...char];
+
+        const newData = indexArrData.map(position => newChar[position]);
+
+        setData(newData);
     }
 
     const {getAllCharacters, loading} = useImageService();
+
+    const itemRefs = useRef([]);
+
+    const reverseCard = (i) => {
+        itemRefs.current.forEach(item => item.classList.remove('flip'));
+        itemRefs.current[i].classList.add('flip');
+        itemRefs.current[i].focus();
+        setTimeout(() => {
+            itemRefs.current[i].classList.remove('flip');
+        }, 3000);
+        console.log(itemRefs.current[i]);
+    }
     
     const renderCards = () => {
         const cards = data.map((item, i) => {
             return (
-                <div className="card" key={i}>
-                    <img src={item.thumbnail} alt={item.name} className="card-front" />
-                    <img src={backImg} alt="back side" className="card-back" />
+                <div 
+                    className='card'
+                    tabIndex={0} 
+                    key={i}
+                    ref={el => itemRefs.current[i] = el}
+                    onClick={() => {reverseCard(i)}}
+                    onKeyPress={(e) => {
+                        if (e.key === '' || e.key === 'Enter') {
+                            reverseCard(i);
+                        } 
+                    }}>
+                        <img src={item.thumbnail} alt={item.name} className="card-front" />
+                        <img src={backImg} alt="back side" className="card-back" />
                 </div>
             )
         })
@@ -55,10 +79,11 @@ const Cards = () => {
     const items = renderCards();
 
     const spinner = loading ? <Spinner/> : null;
+    const content = !loading ? items : null;
 
     return (
         <main className="memory-game">
-            {items}
+            {content}
             {spinner}
         </main>
     )

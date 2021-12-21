@@ -16,7 +16,8 @@ const useImageService = () => {
         return {
             id: char.id,
             name: char.name,
-            thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension
+            thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
+            reverse: false
         }
     }
 
