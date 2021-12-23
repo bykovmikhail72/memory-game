@@ -39,14 +39,38 @@ const Cards = () => {
 
     const itemRefs = useRef([]);
 
+    let pairOfCardsArr = [];
+
     const reverseCard = (i) => {
-        itemRefs.current.forEach(item => item.classList.remove('flip'));
+        // itemRefs.current.forEach(item => item.classList.remove('flip'));
         itemRefs.current[i].classList.add('flip');
         itemRefs.current[i].focus();
-        setTimeout(() => {
-            itemRefs.current[i].classList.remove('flip');
-        }, 3000);
-        console.log(itemRefs.current[i]);
+        
+        pairOfCardsArr.push(itemRefs.current[i].id);
+    
+
+        if (pairOfCardsArr.length === 2) {
+            if (pairOfCardsArr[0] === pairOfCardsArr[1]) {
+                const firstIndex = data.findIndex(item => item.id == pairOfCardsArr[0]);
+                const secondIndex = data.findIndex(item => item.id == pairOfCardsArr[1]);
+                console.log(firstIndex, secondIndex);
+                console.log(data);
+
+                setTimeout(() => {
+                    itemRefs.current[firstIndex].classList.add('card-hidden');
+                    itemRefs.current[secondIndex].classList.add('card-hidden');
+                }, 2000)
+                console.log(itemRefs.current[firstIndex]);
+                console.log(itemRefs.current[secondIndex])
+            }
+
+            pairOfCardsArr = [];
+
+            setTimeout(() => {
+                itemRefs.current.forEach(item => item.classList.remove('flip'));
+            }, 2000);
+        }
+        
     }
     
     const renderCards = () => {
@@ -54,7 +78,8 @@ const Cards = () => {
             return (
                 <div 
                     className='card'
-                    tabIndex={0} 
+                    tabIndex={0}
+                    id={item.id} 
                     key={i}
                     ref={el => itemRefs.current[i] = el}
                     onClick={() => {reverseCard(i)}}
