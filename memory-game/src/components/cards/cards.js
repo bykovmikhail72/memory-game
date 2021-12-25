@@ -8,6 +8,8 @@ import backImg from '../../sources/backSide.PNG'
 
 const Cards = () => {
     const [data, setData] = useState([]);
+    const [openedCards, setOpenedCards] = useState([]);
+    // const [disabled, setDisabled] = useState(false);
 
     useEffect(() => {
         getAllCharacters()
@@ -39,39 +41,31 @@ const Cards = () => {
 
     const itemRefs = useRef([]);
 
-    let pairOfCardsArr = [];
-
     const reverseCard = (i) => {
-        // itemRefs.current.forEach(item => item.classList.remove('flip'));
         itemRefs.current[i].classList.add('flip');
         itemRefs.current[i].focus();
-        
-        pairOfCardsArr.push(itemRefs.current[i].id);
-    
 
-        if (pairOfCardsArr.length === 2) {
-            if (pairOfCardsArr[0] === pairOfCardsArr[1]) {
-                const firstIndex = data.findIndex(item => item.id == pairOfCardsArr[0]);
-                const secondIndex = data.findIndex(item => item.id == pairOfCardsArr[1]);
-                console.log(firstIndex, secondIndex);
-                console.log(data);
+        setOpenedCards(item => [...item, i]);
+    }
 
-                setTimeout(() => {
-                    itemRefs.current[firstIndex].classList.add('card-hidden');
-                    itemRefs.current[secondIndex].classList.add('card-hidden');
-                }, 2000)
-                console.log(itemRefs.current[firstIndex]);
-                console.log(itemRefs.current[secondIndex])
-            }
+    const oneCardOpenedTimeout = useRef();
 
-            pairOfCardsArr = [];
+    useEffect(() => {
+        if (openedCards.length < 2 && openedCards.length > 0) {
+            oneCardOpenedTimeout.current = setTimeout(() => {
+                itemRefs.current.forEach(item => item.classList.remove('flip'));
+                console.log('remove')
+            }, 5000);
+        }
 
+        if (openedCards.length === 2) {
+            clearTimeout(oneCardOpenedTimeout.current);
             setTimeout(() => {
                 itemRefs.current.forEach(item => item.classList.remove('flip'));
-            }, 2000);
+                console.log('remove 2')
+            }, 1000)
         }
-        
-    }
+    }, [openedCards])
     
     const renderCards = () => {
         const cards = data.map((item, i) => {
