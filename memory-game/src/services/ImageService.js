@@ -16,12 +16,11 @@ const useImageService = () => {
         return {
             id: char.id,
             name: char.name,
-            thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension,
-            reverse: false
+            thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension
         }
     }
 
-    return {getAllCharacters, loading, error, clearError};
+    return {getAllCharacters, loading};
 }
 
 export default useImageService;
