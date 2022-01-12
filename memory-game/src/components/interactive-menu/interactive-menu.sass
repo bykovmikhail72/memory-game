@@ -1,5 +1,13 @@
 .interactive
     margin-top: 30px
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    .container
+        width: 500px
+        margin: 0 auto
+        display: flex
     &__timer
         display: flex
         font-size: 30px
@@ -10,19 +18,25 @@
         box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3)
     &__container
         display: flex
-        justify-content: space-around
+        flex-direction: column
         background-color: #FFF
-        width: 1170px
-        margin: 0 auto
         border-radius: 10px
         padding: 10px 0
         align-items: center
-    &__start,
-    &__refresh
-        width: 110px
-        height: 30px
-        border-radius: 5px
+    &__start
+        width: 100%
         font-size: 18px
         box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3)
+        align-content: center
+        &:active
+            transform: scale(0.97)
+            transition: transform(0.2s)
+    &__label
+        color: #Fff
+    &__title
+        margin: 0 0 5px
+        text-align: center
+        
+            
     
         

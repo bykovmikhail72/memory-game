@@ -1,22 +1,20 @@
 import {useHttp} from '../hooks/http.hook';
 
 const useImageService = () => {
-    const {loading, error, response, clearError} = useHttp();
-
-    const _apiBase = "https://gateway.marvel.com:443/v1/public/";
-    const _apiKey = "apikey=aa6c55833c9c60f691a31b9416fc4bef";
-    const _offset = (Math.random() * (1550 - 0) + 0).toFixed(0);
+    const {loading, response} = useHttp();
 
     const getAllCharacters = async () => {
-        const res = await response(`${_apiBase}characters?limit=18&offset=${_offset}&${_apiKey}`);
-        return res.data.results.map(_transormCharacter);
+        const res = await response("http://localhost:3001/cards");
+        console.log(res);
+        return res.map(_transormCharacter);
     }
 
     const _transormCharacter = (char) => {
         return {
             id: char.id,
             name: char.name,
-            thumbnail: char.thumbnail.path + '.' + char.thumbnail.extension
+            path: char.path,
+            opened: char.opened
         }
     }
 

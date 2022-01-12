@@ -1,0 +1,113 @@
+{
+    "cards": [
+        {
+            "id": 1,
+            "path": "cards/1.png",
+            "name": "cardimage",
+            "opened": false
+        },
+        {
+            "id": 2,
+            "path": "cards/2.png",
+            "name": "cardimage",
+            "opened": false
+        },
+        {
+            "id": 3,
+            "path": "cards/3.png",
+            "name": "cardimage",
+            "opened": false
+        },
+        {
+            "id": 4,
+            "path": "cards/4.png",
+            "name": "cardimage",
+            "opened": false
+        },
+        {
+            "id": 5,
+            "path": "cards/5.png",
+            "name": "cardimage",
+            "opened": false
+        },
+        {
+            "id": 6,
+            "path": "cards/6.png",
+            "name": "cardimage",
+            "opened": false
+        },
+        {
+            "id": 7,
+            "path": "cards/7.png",
+            "name": "cardimage",
+            "opened": false
+        },
+        {
+            "id": 8,
+            "path": "cards/8.png",
+            "name": "cardimage",
+            "opened": false
+        },
+        {
+            "id": 9,
+            "path": "cards/9.png",
+            "name": "cardimage",
+            "opened": false
+        },
+        {
+            "id": 10,
+            "path": "cards/10.png",
+            "name": "cardimage",
+            "opened": false
+        },
+        {
+            "id": 11,
+            "path": "cards/11.png",
+            "name": "cardimage",
+            "opened": false
+        },
+        {
+            "id": 12,
+            "path": "cards/12.png",
+            "name": "cardimage",
+            "opened": false
+        },
+        {
+            "id": 13,
+            "path": "cards/13.png",
+            "name": "cardimage",
+            "opened": false
+        },
+        {
+            "id": 14,
+            "path": "cards/14.png",
+            "name": "cardimage",
+            "opened": false
+        },
+        {
+            "id": 15,
+            "path": "cards/15.png",
+            "name": "cardimage",
+            "opened": false
+        },
+        {
+            "id": 16,
+            "path": "cards/16.png",
+            "name": "cardimage",
+            "opened": false
+        },
+        {
+            "id": 17,
+            "path": "cards/17.png",
+            "name": "cardimage",
+            "opened": false
+        },
+        {
+            "id": 18,
+            "path": "cards/18.png",
+            "name": "cardimage",
+            "opened": false
+        }
+
+    ]
+}

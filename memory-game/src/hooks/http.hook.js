@@ -4,7 +4,7 @@ export const useHttp = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const response = useCallback(async (url, method = "GET", body = null, headers = {"Content-Type": "application/json"} ) => {
+    const response = useCallback(async (url, method = "GET", body = null, headers = {"Content-Type": "application/json", 'Accept': 'application/json'} ) => {
 
         setLoading(true);
 
