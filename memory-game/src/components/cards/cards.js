@@ -80,7 +80,11 @@ const Cards = () => {
     useEffect(() => {
         if (openedCards.length < 2 && openedCards.length > 0) {
             oneCardOpenedTimeout.current = setTimeout(() => {
-                itemRefs.current.forEach(item => item.classList.remove('flip'));
+                data.forEach((item, i) => {
+                    if (!item.opened) {
+                        itemRefs.current[i].classList.remove('flip');
+                    }
+                })
                 setOpenedCards([]);
             }, 5000);
         }
@@ -101,6 +105,7 @@ const Cards = () => {
                 setCounterOpened(item => item + 2);
 
                 if (counterOpened === 34) {
+                    setCounterOpened(0);
                     setTimeout(() => {
                         dispatch(toggleAllOppened());
                     }, 2000)
@@ -110,7 +115,6 @@ const Cards = () => {
             clearTimeout(oneCardOpenedTimeout.current);
             //Если условия выше не выполнились и две открытые карточки - разные, то закрываем их основываясь на значении opened
             twoCardOpenedTimeout.current = setTimeout(() => {
-                console.log('first')
                 data.forEach((item, i) => {
                     if (!item.opened) {
                         itemRefs.current[i].classList.remove('flip');
@@ -126,13 +130,10 @@ const Cards = () => {
     useEffect(() => {
         clearTimeout(twoCardOpenedTimeout.current);
         setTimeout(() => {
-            console.log('second')
-            console.log(data)
             data.forEach((item, i) => {
                 //Дополнительное условие, для того, чтобы useEffect не вызывался при начальном рендере страницы
                 if (openedCards === []) {
                     if (!item.opened) {
-                        console.log(item.opened);
                         itemRefs.current[i].remove('flip');
                     }
                 }

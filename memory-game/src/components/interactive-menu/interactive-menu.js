@@ -17,6 +17,7 @@ const InteractiveMenu = () => {
     const dispatch = useDispatch();
 
     const started = useSelector(state => state.started);
+    const allOppened = useSelector(state => state.allOppened);
 
     useEffect(() => {
         if (started) {
@@ -34,11 +35,18 @@ const InteractiveMenu = () => {
     }, [started]);
 
     useEffect(() => {
-        if (!started) {
-            setTotalTime([hours, minutes, seconds]);
+        if (allOppened) {
+            setTotalTime(item => {
+                const newObj = {
+                    hours,
+                    minutes,
+                    seconds
+                };
+                return [...item, newObj];
+            });
         }
         // eslint-disable-next-line
-    }, [started]);
+    }, [allOppened]);
 
     const startTimer = () => {
         dispatch(toggleStarted());
