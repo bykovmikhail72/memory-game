@@ -18,7 +18,7 @@ const InteractiveMenu = () => {
 
     const started = useSelector(state => state.started);
     const allOppened = useSelector(state => state.allOppened);
-
+    //При нажатии кнопки старт происходит обнуление таймера и его запуск
     useEffect(() => {
         if (started) {
             setSeconds(0);
@@ -33,7 +33,7 @@ const InteractiveMenu = () => {
         }
         // eslint-disable-next-line
     }, [started]);
-
+    //Заполнение массива объектами с затраченным временем для дальнейшей передачи в компонент result-table
     useEffect(() => {
         if (allOppened) {
             setTotalTime(item => {
@@ -47,11 +47,11 @@ const InteractiveMenu = () => {
         }
         // eslint-disable-next-line
     }, [allOppened]);
-
+    // Функция запуска таймера изменяющая состояние глобальной переменной started
     const startTimer = () => {
         dispatch(toggleStarted());
     }
-
+    //Логика таймера
     const timer = () => {
         setSeconds(item => item + 1);
     }

@@ -1,5 +1,6 @@
 .results
     width: 250px
+    padding: 10px 
     min-height: 40px
     margin-right: 20px
     border-radius: 5px
@@ -7,6 +8,13 @@
     box-shadow: 3px 3px 3px rgba(0,0,0, .3)
     &__container
         display: flex
+        background-color: rgba(0,0,0, .1)
+        margin-bottom: 10px
+        border-radius: 5px
+        border: 1px solid rgba(0,0,0, .5)
+        box-shadow: 3px 3px 3px rgba(0, 0, 0, .3)
+        &:last-child
+            margin-bottom: 0
     &__number
         font-size: 25px
         padding: 5px 10px
@@ -15,3 +23,5 @@
         font-size: 25px
         margin: 0 auto
         padding: 5px 10px
+    .empty-results
+        text-align: center

@@ -1,6 +1,5 @@
-
 import "../result-table/result-table.sass"
-
+// Динамичекое построение таблицы результатов на основе props приходящих из interactive-menu
 const ResultTable = ({totalTime}) => {
     const items = totalTime.map((item, i) => {
         const hours = item.hours < 10 ? `0${item.hours}` : item.hours;
@@ -13,16 +12,16 @@ const ResultTable = ({totalTime}) => {
             </div>
         )
     })
-
+    //Функция по показу сообщения, что результаты пока отсутствуют
     const showMessageFunc = () => {
         return (
-            <h3 className="empty-results">'There are no results yet'</h3>
+            <div className="empty-results">There are no results yet</div>
         )
     }
 
     const showMessage = showMessageFunc();
 
-    const message = totalTime === [] ? showMessage : null;
+    const message = totalTime.length === 0 ? showMessage : null;
     const results = totalTime.length > 0 ? items : null;
 
     return (

@@ -9,7 +9,8 @@ const reducer = (state = initialState, action) => {
         case "TIMER_STARTED":
             return {
                 ...state,
-                started: true
+                started: true,
+                playAgain: false
             }
         case "ALL_CARDS_OPPENED":
             return {
