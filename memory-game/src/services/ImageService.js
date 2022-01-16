@@ -5,7 +5,6 @@ const useImageService = () => {
 
     const getAllCharacters = async () => {
         const res = await response("http://localhost:3001/cards");
-        console.log(res);
         return res.map(_transormCharacter);
     }
 

@@ -19,24 +19,25 @@ const Cards = () => {
     const {getAllCharacters, loading} = useImageService();
 
     //Используем useSelector react-redux для получения состояния started из стора
-    const started = useSelector(state => state.started);
-    const allOppened = useSelector(state => state.allOppened);
-    const playAgain = useSelector(state => state.playAgain);
+    const {started, allOppened, playAgain} = useSelector(state => state);
 
     //Создаем переменную dispatch для возможности выполнения функции action creator
     const dispatch = useDispatch();
 
-    //Запрос на сервер и создание карточек
-    useEffect(() => {
+    const CARDS = 36;
+
+    function request() {
         getAllCharacters()
             .then(createCards);
-        // eslint-disable-next-line
-    }, [])
+    }
+
+    //Запрос на сервер и создание карточек
+    // eslint-disable-next-line
+    useEffect(request, []);
 
     useEffect(() => {
         if (playAgain) {
-                getAllCharacters()
-                .then(createCards);
+            request();
         }
         // eslint-disable-next-line
     }, [playAgain])
@@ -103,13 +104,6 @@ const Cards = () => {
                 setData(secondStep);
 
                 setCounterOpened(item => item + 2);
-
-                if (counterOpened === 34) {
-                    setCounterOpened(0);
-                    setTimeout(() => {
-                        dispatch(toggleAllOppened());
-                    }, 2000)
-                }
             }
 
             clearTimeout(oneCardOpenedTimeout.current);
@@ -138,6 +132,14 @@ const Cards = () => {
                     }
                 }
             })
+
+            //Проверяем счетчик открытых карточек на равенство с общим количеством карточек для вывода сообщения о новой игре
+            if (counterOpened === CARDS) {
+                setCounterOpened(0);
+                setTimeout(() => {
+                    dispatch(toggleAllOppened());
+                }, 2000)
+            }
 
             setOpenedCards([]);
             setDisabled(false);

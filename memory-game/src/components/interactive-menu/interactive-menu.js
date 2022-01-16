@@ -16,8 +16,7 @@ const InteractiveMenu = () => {
 
     const dispatch = useDispatch();
 
-    const started = useSelector(state => state.started);
-    const allOppened = useSelector(state => state.allOppened);
+    const {started, allOppened} = useSelector(state => state);
     //При нажатии кнопки старт происходит обнуление таймера и его запуск
     useEffect(() => {
         if (started) {

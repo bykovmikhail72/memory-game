@@ -21,12 +21,10 @@ const ResultTable = ({totalTime}) => {
 
     const showMessage = showMessageFunc();
 
-    const message = totalTime.length === 0 ? showMessage : null;
-    const results = totalTime.length > 0 ? items : null;
+    const results = totalTime.length !== 0 ? items : showMessage;
 
     return (
         <div className="results">
-            {message}
             {results}
         </div>
     )
