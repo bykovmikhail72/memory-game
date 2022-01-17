@@ -15,7 +15,7 @@ const Cards = () => {
     const [disabled, setDisabled] = useState(true);
     const [counterOpened, setCounterOpened] = useState(0);
 
-    //Ипользуем кастомные хуки по запросу даных с API
+    //Ипользуем кастомный хук по запросу даных с API
     const {getAllCharacters, loading} = useImageService();
 
     //Используем useSelector react-redux для получения состояния started из стора
@@ -23,9 +23,9 @@ const Cards = () => {
 
     //Создаем переменную dispatch для возможности выполнения функции action creator
     const dispatch = useDispatch();
-
+    //Общее число карточек
     const CARDS = 36;
-
+    //Функция по отправке запроса на локальный сервер и отрисовке карточек
     function request() {
         getAllCharacters()
             .then(createCards);
@@ -34,7 +34,7 @@ const Cards = () => {
     //Запрос на сервер и создание карточек
     // eslint-disable-next-line
     useEffect(request, []);
-
+    //Ререндер карточек при необходимости запуска новой игры
     useEffect(() => {
         if (playAgain) {
             request();
@@ -73,7 +73,7 @@ const Cards = () => {
         itemRefs.current[i].focus();
         setOpenedCards(item => [...item, i]);
     }
-
+    //Используем useRef для предотвращения потери таймера при перерендере
     const oneCardOpenedTimeout = useRef();
     const twoCardOpenedTimeout = useRef();
 
@@ -179,7 +179,7 @@ const Cards = () => {
     }
 
     const items = renderCards();
-
+    
     const spinner = loading ? <Spinner/> : null;
     const newGame = allOppened ? <Question/> : null
     const content = !loading && !allOppened ? items : null;

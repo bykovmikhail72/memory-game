@@ -56,7 +56,6 @@ const InteractiveMenu = () => {
     }
 
     useEffect(() => {
-
         if (seconds === 60) {
             setMinutes(item => item + 1);
             setSeconds(0);
