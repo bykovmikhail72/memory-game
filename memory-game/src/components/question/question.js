@@ -10,13 +10,9 @@ const Question = () => {
     return (
         <div className="question">
             <h3 className="question__title">Do you want to play again?</h3>
-            <div className="question__buttons">
-                <button 
-                    className="question__buttons-yes btn btn-primary"
-                    onClick={() => dispatch(togglePlayAgain())}>Yes</button>
-                <button 
-                    className="question__buttons-no btn btn-danger">No</button>
-            </div>
+            <button 
+                className="question__btn btn btn-primary"
+                onClick={() => dispatch(togglePlayAgain())}>Yes, of cource!</button>
         </div>
     )
 }

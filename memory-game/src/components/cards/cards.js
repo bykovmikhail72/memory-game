@@ -124,15 +124,6 @@ const Cards = () => {
     useEffect(() => {
         clearTimeout(twoCardOpenedTimeout.current);
         setTimeout(() => {
-            data.forEach((item, i) => {
-                //Дополнительное условие, для того, чтобы useEffect не вызывался при начальном рендере страницы
-                if (openedCards === []) {
-                    if (!item.opened) {
-                        itemRefs.current[i].remove('flip');
-                    }
-                }
-            })
-
             //Проверяем счетчик открытых карточек на равенство с общим количеством карточек для вывода сообщения о новой игре
             if (counterOpened === CARDS) {
                 setCounterOpened(0);
