@@ -1,8 +1,9 @@
 import {useState, useEffect, useRef} from 'react'
-import { useSelector, useDispatch } from 'react-redux';
-import { toggleStarted } from '../../actions';
+import {useSelector, useDispatch} from 'react-redux';
+import {toggleStarted} from '../../store/actions';
 
 import ResultTable from '../result-table/result-table';
+import timerActions from '../../utils/timerActions/timerActions';
 
 import '../interactive-menu/interactive-menu.sass'
 
@@ -24,12 +25,12 @@ const InteractiveMenu = () => {
             setMinutes(0);
             setHours(0);
             interval.current = setInterval(timer, 1000);
-        }
+        };
 
         return () => {
             interval.current && clearInterval(interval.current);
             interval.current = null;
-        }
+        };
         // eslint-disable-next-line
     }, [started]);
     //Заполнение массива объектами с затраченным временем для дальнейшей передачи в компонент result-table
@@ -43,30 +44,32 @@ const InteractiveMenu = () => {
                 };
                 return [...item, newObj];
             });
-        }
+        };
         // eslint-disable-next-line
     }, [allOppened]);
     // Функция запуска таймера изменяющая состояние глобальной переменной started
     const startTimer = () => {
         dispatch(toggleStarted());
-    }
+    };
     //Логика таймера
     const timer = () => {
         setSeconds(item => item + 1);
-    }
+    };
 
     useEffect(() => {
         if (seconds === 60) {
             setMinutes(item => item + 1);
             setSeconds(0);
-        }   
+        };   
 
         if (minutes === 60) {
             setHours(item => item + 1);
             setMinutes(0);
-        }
+        };
         // eslint-disable-next-line
-    }, [seconds])
+    }, [seconds]);
+
+    // const {hoursModify, minutesModify, secondsModify} = timerActions(seconds, minutes, hours);
 
     return (
         <section className="interactive">
@@ -83,14 +86,14 @@ const InteractiveMenu = () => {
                             <div className="interactive__timer-seconds">{seconds < 10 ? `0${seconds}` : seconds}</div>
                         </div> 
                         <button 
-                            className="interactive__start btn btn-primary mt-2"
+                            className="interactive__start btn btn-success mt-2"
                             onClick={startTimer}
                             disabled={started}
                         >START</button> 
                     </div>
                 </div>
         </section>
-    )
-}
+    );
+};
 
 export default InteractiveMenu;

@@ -1,6 +1,6 @@
-import { togglePlayAgain } from "../../actions";
+import {togglePlayAgain} from "../../store/actions";
 
-import { useDispatch } from "react-redux";
+import {useDispatch} from "react-redux";
 
 import "../question/question.sass";
 
@@ -14,7 +14,7 @@ const Question = () => {
                 className="question__btn btn btn-primary"
                 onClick={() => dispatch(togglePlayAgain())}>Yes, of cource!</button>
         </div>
-    )
-}
+    );
+};
 
 export default Question;

@@ -1,13 +1,16 @@
 import {useState, useEffect, useRef} from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {toggleAllOppened} from '../../store/actions';
 
 import useImageService from "../../services/ImageService"
+import createCardsArr from '../../utils/createCards/createCards';
 import Spinner from '../spinner/spinner';
 import Question from '../question/question';
-import { toggleAllOppened } from '../../actions';
 
 import '../cards/cards.sass'
-import backImg from '../../sources/backSide.PNG'
+
+// Общее число карточек
+const CARDS = 36;
 
 const Cards = () => {
     const [data, setData] = useState([]);
@@ -15,112 +18,99 @@ const Cards = () => {
     const [disabled, setDisabled] = useState(true);
     const [counterOpened, setCounterOpened] = useState(0);
 
-    //Ипользуем кастомный хук по запросу даных с API
+    // Ипользуем кастомный хук по запросу даных с API
     const {getAllCharacters, loading} = useImageService();
 
-    //Используем useSelector react-redux для получения состояния started из стора
+    // Используем useSelector react-redux для получения состояния started из стора
     const {started, allOppened, playAgain} = useSelector(state => state);
 
-    //Создаем переменную dispatch для возможности выполнения функции action creator
+    // Создаем переменную dispatch для возможности выполнения функции action creator
     const dispatch = useDispatch();
-    //Общее число карточек
-    const CARDS = 36;
-    //Функция по отправке запроса на локальный сервер и отрисовке карточек
+    
+    // Функция по отправке запроса на локальный сервер и отрисовке карточек
     function request() {
         getAllCharacters()
             .then(createCards);
+    };
+    // Функция по возвращению карточек в исходное состояние
+    function removeFlip() {
+        data.forEach((item, i) => {
+            if (!item.opened) {
+                itemRefs.current[i].classList.remove('flip');
+            }
+        });
+        setOpenedCards([]);
+    };
+    // Функция по модификации стейта - изменение свойства opened
+    function createNewData () {
+        clearTimeout(oneCardOpenedTimeout.current);
+        //Создаем два новых объекта для открытых карточек, в которых меняем значение opened на true
+        const firstObj = {...data[openedCards[0]], opened: !data[openedCards[0]].opened};
+        const secondObj = {...data[openedCards[1]], opened: !data[openedCards[1]].opened};
+        //Заменяем в data объекты открытых карточек для сохранения иммутабельности
+        const firstStep = [...data.slice(0, openedCards[0]), firstObj, ...data.slice(openedCards[0] + 1)];
+        const secondStep = [...firstStep.slice(0, openedCards[1]), secondObj, ...firstStep.slice(openedCards[1] + 1)];
+
+        setData(secondStep);
+
+        setCounterOpened(item => item + 2);
     }
 
-    //Запрос на сервер и создание карточек
+    // Запрос на сервер и создание карточек
     // eslint-disable-next-line
     useEffect(request, []);
-    //Ререндер карточек при необходимости запуска новой игры
+    // Ререндер карточек при необходимости запуска новой игры
     useEffect(() => {
         if (playAgain) {
             request();
         }
         // eslint-disable-next-line
-    }, [playAgain])
+    }, [playAgain]);
 
-    //Заполняем стейт данными карточек в рандомном порядке, получая данные с API.
+    // Заполняем стейт данными карточек в рандомном порядке, получая данные с локальной БД
     const createCards = (char) => {
-        function itemsPosition() {
-            let indexArrData = [];
-            for (let i = 0; i <= 35; i++) {
-                indexArrData.push(i);
-            }
-
-            indexArrData.sort(() => Math.random() - 0.5);
-
-            return indexArrData;
-        }
-
-        const indexArrData = itemsPosition();
-
-        const newChar = [...char, ...char];
-
-        const newData = indexArrData.map(position => newChar[position]);
+        const newData = createCardsArr(char);
 
         setData(newData);
-    }
+    };
 
-    //Используем рефы для получения карточки при нажатии и установки фокуса
+    // Используем рефы для получения карточки при нажатии и установки фокуса
     const itemRefs = useRef([]);
 
-    //Функция переворачивания карточек и установки фокуса
+    // Функция переворачивания карточек и установки фокуса
     const reverseCard = (i) => {
         itemRefs.current[i].classList.add('flip');
         itemRefs.current[i].focus();
         setOpenedCards(item => [...item, i]);
-    }
-    //Используем useRef для предотвращения потери таймера при перерендере
+    };
+    // Используем useRef для предотвращения потери таймера при перерендере
     const oneCardOpenedTimeout = useRef();
     const twoCardOpenedTimeout = useRef();
 
-    //Сравнение открытых карточек и выполнение дальнейших действий по результатам условия
+    // Сравнение открытых карточек и выполнение дальнейших действий по результатам условия
     useEffect(() => {
-        if (openedCards.length < 2 && openedCards.length > 0) {
+        if (openedCards.length === 1) {
             oneCardOpenedTimeout.current = setTimeout(() => {
-                data.forEach((item, i) => {
-                    if (!item.opened) {
-                        itemRefs.current[i].classList.remove('flip');
-                    }
-                })
-                setOpenedCards([]);
+                removeFlip();
             }, 5000);
-        }
-        //Если количество открытых карточек - 2, то производим изменение элемента opened в массиве объектов
+        };
+        // Если количество открытых карточек - 2, то производим изменение элемента opened в массиве объектов
         if (openedCards.length === 2) {
             setDisabled(true);
             if (data[openedCards[0]].id === data[openedCards[1]].id) {
-                clearTimeout(oneCardOpenedTimeout.current);
-                //Создаем два новых объекта для открытых карточек, в которых меняем значение opened на true
-                const firstObj = {...data[openedCards[0]], opened: !data[openedCards[0]].opened};
-                const secondObj = {...data[openedCards[1]], opened: !data[openedCards[1]].opened};
-                //Заменяем в data объекты открытых карточек для сохранения иммутабельности
-                const firstStep = [...data.slice(0, openedCards[0]), firstObj, ...data.slice(openedCards[0] + 1)];
-                const secondStep = [...firstStep.slice(0, openedCards[1]), secondObj, ...firstStep.slice(openedCards[1] + 1)];
-
-                setData(secondStep);
-
-                setCounterOpened(item => item + 2);
+                createNewData();
             }
 
             clearTimeout(oneCardOpenedTimeout.current);
-            //Если условия выше не выполнились и две открытые карточки - разные, то закрываем их основываясь на значении opened
+            // Если условия выше не выполнились и две открытые карточки - разные, то закрываем их основываясь на значении opened
             twoCardOpenedTimeout.current = setTimeout(() => {
-                data.forEach((item, i) => {
-                    if (!item.opened) {
-                        itemRefs.current[i].classList.remove('flip');
-                    }
-                })
-                setOpenedCards([]);
+                removeFlip();
                 setDisabled(false);
             }, 2000);
         }
         // eslint-disable-next-line
     }, [openedCards])
-    //Дополнительный useEffect с зависимостью от data, ввиду асинхронности выполнения сеттеров
+    // Дополнительный useEffect с зависимостью от data, ввиду асинхронности выполнения сеттеров
     useEffect(() => {
         clearTimeout(twoCardOpenedTimeout.current);
         setTimeout(() => {
@@ -139,7 +129,7 @@ const Cards = () => {
     }, [data]);
 
 
-    //Динамическое построение карточек на странице
+    // Динамическое построение карточек на странице
     const renderCards = () => {
         const cards = data.map((item, i) => {
             return (
@@ -157,17 +147,17 @@ const Cards = () => {
                         } 
                     }}>
                         <img src={item.path} alt={item.name} className="card-front" />
-                        <img src={backImg} alt="back side" className="card-back" />
+                        <div className='card-back'></div>
                 </button>
-            )
-        })
-        //Конструкция для центрирования спиннера загрузки
+            );
+        });
+        // Конструкция для центрирования спиннера загрузки
         return (
             <div className="container">
                 {cards}
             </div>
-        )
-    }
+        );
+    };
 
     const items = renderCards();
     
@@ -181,7 +171,7 @@ const Cards = () => {
             {newGame}
             {spinner}
         </main>
-    )
-}
+    );
+};
 
 export default Cards;
