@@ -3,7 +3,6 @@ import {useSelector, useDispatch} from 'react-redux';
 import {toggleStarted} from '../../store/actions';
 
 import ResultTable from '../result-table/result-table';
-import timerActions from '../../utils/timerActions/timerActions';
 
 import '../interactive-menu/interactive-menu.sass'
 
@@ -68,8 +67,6 @@ const InteractiveMenu = () => {
         };
         // eslint-disable-next-line
     }, [seconds]);
-
-    // const {hoursModify, minutesModify, secondsModify} = timerActions(seconds, minutes, hours);
 
     return (
         <section className="interactive">
