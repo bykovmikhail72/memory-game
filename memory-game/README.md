@@ -4,4 +4,4 @@ when its clicked.
     I used tecknologes such as React, Redux, React-redux, a little bit bootstrap. Also I used json-server npm, use of which has 
 become possible by using cuncurrently library.
 
-    Thank you for watching!
+    Thank you for watching!:)
